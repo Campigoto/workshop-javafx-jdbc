@@ -70,12 +70,21 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		initializeNodes();
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
 
+	}
+
+	private void initializeNodes() {
+		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+		Stage stage = (Stage) Main.getMainScene().getWindow();
+		tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
 	}
 
 	public void updateTableView() {
@@ -161,7 +170,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		});
 	}
 
-	private void  removeEntity(Department obj) {
+	private void removeEntity(Department obj) {
 		Optional<ButtonType> result = Alerts.showConfirmation("Confirmation !", "Are you sure to delete ?");
 		if (result.get() == ButtonType.OK) {
 			if (service == null) {
@@ -170,11 +179,10 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			try {
 				service.remove(obj);
 				updateTableView();
-			}
-			catch (DbIntegrityException e) {
+			} catch (DbIntegrityException e) {
 				Alerts.showAlert("Error removing object !", null, e.getMessage(), AlertType.ERROR);
 			}
-			
+
 		}
 	}
 
